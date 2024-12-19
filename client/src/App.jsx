@@ -12,6 +12,7 @@ import Movies from './pages/userContents/Movies'
 import { useSelector } from 'react-redux'
 import Profile from './pages/userContents/Profile'
 import MovieDetails from './pages/userContents/MovieDetails'
+import ComingSoon from './pages/userContents/ComingSoon'
 
 function App() {
 
@@ -48,8 +49,12 @@ function App() {
     },
     {path:'/displaymovie',
       element:<Movies/>
-    },{path:'/moviedetails/:id',
+    },
+    {path:'/moviedetails/:id',
       element:<MovieDetails/>
+    },
+    {path:'/comingsoon',
+      element:<ComingSoon/>
     }
   ])
   return (

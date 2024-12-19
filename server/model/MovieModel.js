@@ -7,7 +7,11 @@ const MovieSchema = new mongoose.Schema({
     image:String,
     director:String,
     production:String,
-    staring:String
+    staring:String,
+    status:{
+        type:String,
+    enum:['running','comingsoon','expires']}
+
 
 
 },

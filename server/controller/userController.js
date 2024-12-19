@@ -38,11 +38,49 @@ const getsingleMovieData = async(req,res)=>{
     try{
         const singleData = await movie.findById(req.params.id)
         console.log("singleeeeeeeeeeeeeee",singleData)
-        res.status(200).json(singleData)
+        return res.status(200).json(singleData)
 
     }catch(err){
         return res.status(500).json(err.message)
     }
 }
 
-module.exports = {userRegister,userLogin,getsingleMovieData}
+const getSingleUser = async(req,res)=>{
+    try{
+        const singleUser = await user.findById(req.params.id)
+        return res.status(200).json(singleUser)
+
+
+    }catch(err){
+        return res.status(500).json(err.message)
+    }
+}
+
+const updateUser = async(req,res)=>{
+    console.log("helllllllllllllllll")
+    if(req.body.password){
+        req.body.password = await argon.hash(req.body.password)
+    }
+    
+    try{
+
+        const updatedUser = await user.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
+        console.log("jjjjjjjj",updatedUser)
+        return res.status(200).json(updatedUser)
+
+    }catch(err){
+        return res.status(500).json(err.message)
+    }
+}
+
+const getComingsoonMovies = async(req,res)=>{
+    try{
+        const getComingMovieDetails = await movie.find({status:'comingsoon'})
+        return res.status(200).json(getComingMovieDetails)
+
+    }catch(err){
+        return res.status(500).json(500).json(err.message)
+    }
+}
+
+module.exports = {userRegister,userLogin,getsingleMovieData,getSingleUser,updateUser,getComingsoonMovies}

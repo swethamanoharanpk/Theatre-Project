@@ -7,7 +7,7 @@ export const addAdminLogin = async(adminInfo)=>{
         return getAdmin.data
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
     }
 }
 
@@ -17,7 +17,7 @@ export const postUserSignup = async(userInfo)=>{
         return userResponse.data
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
     }
 }
 
@@ -30,7 +30,29 @@ export const addUserLogin = async(userLoginInfo,dispatch)=>{
         return loginResponse.data
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
+    }
+}
+
+export const getUserLogin = async(id)=>{
+    try{
+        const profileDetails = await axios.get(`http://localhost:4000/user/getsingleuser/${id}`)
+        console.log("userrrrrrrrrrrrrrr",profileDetails)
+        return profileDetails.data
+
+    }catch(err){
+        console.log(err.message)
+    }
+}
+
+
+export const updateUserDetails = async(userUpInfo,id)=>{
+    try{
+        const updatedDetails = await axios.put(`http://localhost:4000/user/update/${id}`,userUpInfo)
+        console.log("upppppppppppppppppppp",updatedDetails)
+        return updatedDetails.data
+
+    }catch(err){
     }
 }
 
@@ -41,7 +63,7 @@ export const addNewMovies = async(movieDetails)=>{
         return movieResponse.data
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
     }
 }
 
@@ -52,7 +74,7 @@ export const addNewBanner = async(bannerDetails)=>{
         return bannerResponse.data
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
 
     }
 }
@@ -64,7 +86,7 @@ export const getBannerData = async()=>{
         return bannerData.data
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
     }
 }
 
@@ -75,7 +97,7 @@ export const getMovieData = async()=>{
         
 
     }catch(err){
-        return res.status(500).json(err.message)
+        console.log(err.message)
     }
 }
 
@@ -86,4 +108,14 @@ export const getSingleMovieDetails = async(id)=>{
         return singleMovie.data
 
     }catch(err){}
+}
+
+export const getComingMovieDetails = async()=>{
+    try{
+        const comingMovie = await axios.get('http://localhost:4000/user/comingmovie')
+        return comingMovie.data
+
+    }catch(err){
+        console.log(err)
+    }
 }

@@ -10,6 +10,7 @@ const AddMovies = () => {
   const [director,setDirector] = useState('')
   const [production,setProduction] = useState('')
   const [staring,setStaring] = useState('')
+  const [status,setStatus] = useState('')
 
 
   const [movie,setMovie] = useState('')
@@ -37,7 +38,7 @@ setImage(imageUrl.url)
   }
 
   const displayMovies = ()=>{
-    addNewMovies({movieName,language,genre,image,duration,director,production,staring}).then((result)=>{
+    addNewMovies({movieName,language,genre,image,duration,director,production,staring,status}).then((result)=>{
       console.log("%%%%%%%",result)
       setMovie(result)
     })
@@ -60,8 +61,15 @@ setImage(imageUrl.url)
     <input onChange={(e)=>{setDirector(e.target.value)}}></input>
     <label>Production</label>
     <input onChange={(e)=>{setProduction(e.target.value)}}></input>
-    <labe>Staring</labe>
+    <label>Staring</label>
     <input onChange={(e)=>{setStaring(e.target.value)}}></input>
+    <label>Status</label>
+    <select onChange={(e)=>{setStatus(e.target.value)}}>
+    <option value='running'>running</option>
+    <option value='comingsoon'>comingsoon</option>
+    <option value='expires'>expires</option>
+    </select>
+    
     <label>Upload Image</label>
     <input type='file' onChange={addImage}></input>
     <button onClick={displayMovies}>Add Movies</button>

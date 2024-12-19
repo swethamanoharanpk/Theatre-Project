@@ -33,7 +33,7 @@ const MovieDetails = () => {
     </div>
     <div>
     {singleMovie.map((item,index)=>(
-        <MDBCard style={{ maxWidth: '800px', margin:'100px'}} key={index}> 
+        <MDBCard style={{ maxWidth: '800px', margin:'100px',fontSize:'20px',fontFamily:'"Niramit", sans-serif'}} key={index}> 
       <MDBRow className='g-0'>
         <MDBCol md='4'>
           <MDBCardImage src={item.image} alt='...' fluid />

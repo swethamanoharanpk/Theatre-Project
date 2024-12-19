@@ -13,7 +13,7 @@ const AdminNavbar = () => {
     <MDBNavbar light bgColor='light'>
         <MDBContainer fluid>
           <MDBNavbarBrand href='#'>
-          HOME
+           HOME
           </MDBNavbarBrand>
           <MDBNavbarBrand href='#'>
           <Link to={'/movie'}>ADD MOVIES</Link>

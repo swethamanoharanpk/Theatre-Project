@@ -58,7 +58,7 @@ const getBanner = async(req,res)=>{
 
 const getMovies = async(req,res)=>{
     try{
-        const getMovieDetails = await movies.find()
+        const getMovieDetails = await movies.find({status:'running'})
         return res.status(200).json(getMovieDetails)
 
     }catch(err){

@@ -22,22 +22,13 @@ const UserProNavbar = () => {
 
     }
   return (
-    <div>
-    <MDBNavbar light bgColor='light'>
+    <div style={{fontFamily:'"IM Fell English SC", serif',marginTop:'7px'}}>
+    <MDBNavbar light bgColor='black'color='white'>
         <MDBContainer fluid>
-          <MDBNavbarBrand href='#'>
-          HOME
-          </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
-          EDIT PROFILE
-          </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
-          CHANGE PASSWORD
-          </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
+          <MDBNavbarBrand href='#' className="text-white" style={{fontSize:'17px',marginRight:'40px'}}>
           BOOKING HISTORY
           </MDBNavbarBrand>
-          <MDBNavbarBrand href='#' onClick={userLogout}>
+          <MDBNavbarBrand href='#' onClick={userLogout} className="text-white" style={{fontSize:'14px',marginLeft:'90px'}}>
           LOGOUT
           </MDBNavbarBrand>
         </MDBContainer>
