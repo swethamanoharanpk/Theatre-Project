@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import Profile from './pages/userContents/Profile'
 import MovieDetails from './pages/userContents/MovieDetails'
 import ComingSoon from './pages/userContents/ComingSoon'
+import MovieSchedule from './pages/adminContents/MovieSchedule'
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
     {path:'/signup',
       element:<Signup/>
     },
-    {path:'/seat',
+    {path:'/seat/:id/:date',
       element:<Seats/>
     },
     {path:'/adminlogin',
@@ -55,6 +56,9 @@ function App() {
     },
     {path:'/comingsoon',
       element:<ComingSoon/>
+    },
+    {path:'/schedule',
+      element:<MovieSchedule/>
     }
   ])
   return (

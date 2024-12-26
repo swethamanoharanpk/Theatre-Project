@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Link, useParams } from 'react-router-dom';
 import {
     MDBCard,
     MDBCardTitle,
@@ -16,6 +18,11 @@ import { getSingleMovieDetails } from '../../../api';
 const MovieDetails = () => {
 
     const [singleMovie,setSingleMovie] = useState([])
+
+    const [startDate, setStartDate] = useState(new Date());
+
+    console.log("dateeeeeeeeeeeeeee",startDate)
+
     const {id} = useParams()
     console.log("Haiiiiiiiiiiii",id)
     useEffect(()=>{
@@ -30,6 +37,9 @@ const MovieDetails = () => {
     <div>
     <div>
     <Navbar/>
+    </div>
+    <div style={{display:'flex',flexWrap:'wrap',marginLeft:'100px',marginTop:'10px'}}>
+    <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
     </div>
     <div>
     {singleMovie.map((item,index)=>(
@@ -50,7 +60,8 @@ const MovieDetails = () => {
               Staring : {item.staring}</p>
             </MDBCardText>
             <MDBCardText style={{display:'flex'}}>
-              <MDBBtn style={{ border:'1px solid black',color:'white', backgroundColor:'white',margin:'30px',boxShadow:'none'}}></MDBBtn>
+            <MDBBtn style={{width:'150px',borderRadius: '0',backgroundColor:'red',margin:'0',fontSize:'13px'}}><Link to={`/seat/${item._id}/${startDate}`}>Book Tickets</Link></MDBBtn>
+              
             </MDBCardText>
           </MDBCardBody>
         </MDBCol>

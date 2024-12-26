@@ -33,7 +33,7 @@ const ComingSlider = () => {
         pagination={{
           clickable: true,
         }}
-
+        loop={true}
         autoplay={{
             delay: 2500,
             disableOnInteraction: false,

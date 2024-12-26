@@ -36,7 +36,7 @@ const HomeSlider = () => {
     <Swiper
         cssMode={true}
         navigation={true}
-
+        loop={true} 
         autoplay={{
           delay: 2500,
           disableOnInteraction: false,

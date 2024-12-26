@@ -101,6 +101,38 @@ export const getMovieData = async()=>{
     }
 }
 
+export const getAllMovieData = async()=>{
+    try{
+        const movieAllData = await axios.get('http://localhost:4000/admin/getallmovie')
+        return movieAllData.data
+        
+
+    }catch(err){
+        console.log(err.message)
+    }
+}
+
+export const updateMovies = async(updateInfo,id)=>{
+    console.log("api iddddddddddddddddd",id)
+    try{
+        const updatemovie = await axios.put(`http://localhost:4000/admin/update/${id}`,updateInfo)
+        return updatemovie.update.data
+
+    }catch(err){
+        console.log(err)
+    }
+}
+export const deleteMovies = async(id)=>{
+    console.log("delete idddddddddddddddd",id)
+    try{
+        const deletedMovies = await axios.delete(`http://localhost:4000/admin/delete/${id}`)
+        console.log(deletedMovies.message)
+
+    }catch(err){
+        console.log(err)
+    }
+}
+
 export const getSingleMovieDetails = async(id)=>{
     try{
         const singleMovie = await axios.get(`http://localhost:4000/user/getsinglemovie/${id}`)
@@ -119,3 +151,37 @@ export const getComingMovieDetails = async()=>{
         console.log(err)
     }
 }
+
+
+export const getSchedule = async(id,date)=>{
+    try{
+        console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",id,date)
+        const scheduledMovie = await axios.get(`http://localhost:4000/user/schedule/${id}/${date}`).then((res)=>{
+            console.log('axiossssss',res.data)
+        })
+        console.log("nnnnnnnnnnnnnnnnnnnnnnn",scheduledMovie.movieSchedulesForDate)
+        return scheduledMovie.movieSchedulesForDate.data
+
+    }catch(err){}
+}
+
+// export const getSchedule = async(id,date)=>{
+//     try{
+//         const scheduledMovie = await axios.get(`http://localhost:4000/user/schedule/${id}/${date}`)
+//         return scheduledMovie.data
+
+//     }catch(err){}
+// }
+
+export const addScreen = async(schedule)=>{
+    try{
+        const addScreenData = await axios.post('http://localhost:4000/admin/addscreen',schedule)
+        return addScreenData.data
+
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+export const getMovies = ()=>{}

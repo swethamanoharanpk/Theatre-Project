@@ -11,20 +11,20 @@ const AdminNavbar = () => {
   return (
     <div>
     <MDBNavbar light bgColor='light'>
-        <MDBContainer fluid>
-          <MDBNavbarBrand href='#'>
+        <MDBContainer fluid style={{display:'flex',justifyContent:'center'}}>
+          <MDBNavbarBrand href='#' style={{fontSize:'15px'}}>
            HOME
           </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
+          <MDBNavbarBrand href='#' style={{fontSize:'15px'}}>
           <Link to={'/movie'}>ADD MOVIES</Link>
           </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
+          <MDBNavbarBrand href='#' style={{fontSize:'15px'}}>
           <Link to={'/banner'}>ADD BANNER</Link>
           </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
-           UPDATE MOVIES
+          <MDBNavbarBrand href='#' style={{fontSize:'15px'}}>
+          <Link to={'/schedule'}>ADD SCHEDULE</Link>
           </MDBNavbarBrand>
-          <MDBNavbarBrand href='#'>
+          <MDBNavbarBrand href='#' style={{fontSize:'15px'}}>
            LOGOUT
           </MDBNavbarBrand>
         </MDBContainer>

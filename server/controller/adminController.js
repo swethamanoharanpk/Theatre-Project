@@ -1,6 +1,7 @@
 const admin = require('../model/AdminModel')
 const movies = require('../model/MovieModel')
 const banner = require('../model/BannerModel')
+const screen = require('../model/ScheduleModel')
 const {generateToken} = require('../jwtverify')
 
 
@@ -62,10 +63,118 @@ const getMovies = async(req,res)=>{
         return res.status(200).json(getMovieDetails)
 
     }catch(err){
-        return res.status(500).json(500).json(err.message)
+        return res.status(500).json(err.message)
     }
 }
 
 
+const getAllMovies = async(req,res)=>{
+    try{
+        const getAllMovieDetails = await movies.find()
+        return res.status(200).json(getAllMovieDetails)
 
-module.exports = {adminLogin,postMovies,postBanner,getBanner,getMovies}
+    }catch(err){
+        return res.status(500).json(err.message)
+    }
+}
+
+const updatedMovies = async(req,res)=>{
+    try{
+        const updatedDetails = await movies.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
+        console.log("updatedddddddddddd",updatedDetails)
+        return res.status(200).json({update:updatedDetails, message:'updated successfully'})
+
+    }catch(err){
+        return res.status(500).json(err.message)
+    }
+}
+
+const deleteMovie = async(req,res)=>{
+    try{
+        const deletedDetails = await movies.findByIdAndDelete(req.params.id)
+        return res.status(200).json({message:"movie deleted"})
+
+    }catch(err){
+        return res.status(500).json(err.message)
+
+    }
+}
+
+// const addScreenData = async (req,res)=>{
+//     try{
+//         const {movieName,movieId,showTime,showDate} = req.body
+//         console.log("kittiyooooooooooooooo",showTime)
+//         // const screenData = await screen.create({ movieId, showTime, showDate,movieName });
+
+//         const Screen = await screen.findOne(movieId);
+//         console.log("88888888888888",Screen)
+//         if(!Screen){
+//             return
+//         }
+
+//         Screen.movieSchedules.push({
+//             movieId,
+//             showTime,
+//             notAvailableSeats:[],
+//             showDate
+//         });
+//         await Screen.save()
+//         return res.status(200).json("added successfully")
+
+
+//     }catch(err){
+//         return res.status(500).json(err.message)
+//     }
+// }
+
+// const addSchedule = async (req,res)=>{
+//     try{
+//         const movie = await movies.findById(movieId)
+        
+
+//     }catch(err){
+//         return res.status(500).json(err.message)
+//     }
+// }
+
+
+
+
+const addScreenData = async (req, res) => {
+    try {
+        const { movieName, movieId, showTime, showDate } = req.body;
+
+        // Check if the movie schedule already exists
+        let Screen = await screen.findOne({ movieId });
+        
+        if (!Screen) {
+            // Create a new schedule document if none exists
+            Screen = new screen({
+                movieName,
+                movieId,
+                seats: [], // Initialize seats if required
+                movieSchedules: [], // Initialize movieSchedules array
+            });
+        }
+
+        // Add new schedule to the movieSchedules array
+        Screen.movieSchedules.push({
+            movieId,
+            showTime,
+            showDate,
+            notAvailableSeats: [], // Initialize with an empty array
+        });
+
+        // Save the updated/new document
+        await Screen.save();
+
+        return res.status(200).json({ message: "Schedule added successfully", Screen });
+
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+};
+
+
+
+module.exports = {adminLogin,postMovies,postBanner,getBanner,getMovies,updatedMovies,getAllMovies,deleteMovie,addScreenData}
