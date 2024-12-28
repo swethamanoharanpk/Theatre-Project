@@ -25,6 +25,7 @@ const MovieDetails = () => {
 
     const {id} = useParams()
     console.log("Haiiiiiiiiiiii",id)
+    
     useEffect(()=>{
         getSingleMovieDetails(id).then((result)=>{
             const movieData = Array.isArray(result) ? result : [result];

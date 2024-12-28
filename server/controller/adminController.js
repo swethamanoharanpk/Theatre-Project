@@ -142,17 +142,42 @@ const deleteMovie = async(req,res)=>{
 
 const addScreenData = async (req, res) => {
     try {
-        const { movieName, movieId, showTime, showDate } = req.body;
+        const { movieName, movieId, showsDate, seats, showTime, showDate } = req.body;
+
+
+
+        const date = req.body.showDate
+
+
+        const inputDate = date
+
+// Parse the date string into a Date object
+const parsedDate = new Date(inputDate);
+
+// Convert to ISO format and set time to midnight (UTC)
+const formattedDate = new Date(
+  Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate())
+).toISOString();
+
+console.log(formattedDate); // Output: 2024-12-30T00:00:00.000Z
+
+
+
+
+
 
         // Check if the movie schedule already exists
-        let Screen = await screen.findOne({ movieId });
+        let Screen = await screen.findOne({ movieId:movieId , showsTime:formattedDate});
+
+        console.log("adminScreen",screen)
         
         if (!Screen) {
             // Create a new schedule document if none exists
             Screen = new screen({
                 movieName,
                 movieId,
-                seats: [], // Initialize seats if required
+                showsDate,
+                seats, // Initialize seats if required
                 movieSchedules: [], // Initialize movieSchedules array
             });
         }

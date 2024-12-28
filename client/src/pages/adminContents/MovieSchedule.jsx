@@ -6,11 +6,9 @@ const MovieSchedule = () => {
 
   const [movies,setMovies] = useState([])
 
-  const seatLayout = {
-    timeSlot:[
-      {time:'10.00 AM',
-        seats:[
-          {type:'top',
+  const seatLayout = [
+    {
+          type:'top',
             rows:[
             {rowName:'H',
               cols:[
@@ -116,16 +114,19 @@ const MovieSchedule = () => {
             ]}
 
           ],
-        price:150}
-        ]
-      }
-    ]
+        price:150
+        
+      
+    
   }
+]
 
   const [schedule,setSchedule] = useState({
-    seats:seatLayout,
+    
     movieId: "",
     movieName:"",
+    seats:seatLayout,
+    showsTime:"",
     showTime: "",
     showDate: ""
   })
@@ -151,14 +152,16 @@ const MovieSchedule = () => {
   }
 
   return (
-    <div>MovieSchedule
+    <div>
 
     <div>
     <div className='items'>
+    <input type='date' name='showsDate' id='showsDate'
+    onChange={(e)=> setSchedule({...schedule,showsDate: e.target.value})} />
     <h1>Movies</h1>
     {
-      movies?.map((movie,index)=>(
-        <div className={schedule.movieId === movie._id ? 'item-selected': 'item'} key={index}
+      movies?.map((movie)=>(
+        <div className={schedule.movieId === movie._id ? 'item-selected': 'item'} key={movie._id}
         onClick={()=>{
           setSchedule({...schedule, movieId:movie._id,movieName:movie.movieName})
         }}>
@@ -174,10 +177,12 @@ const MovieSchedule = () => {
   
 
 
-    <input type='time' name='showTime' id='showTime' 
+    <input type='time' name='showTime'  id='showTime' 
     onChange={(e)=> setSchedule({...schedule, showTime: e.target.value})}/>
+    
     <input type='date' name='showDate' id='showDate'
     onChange={(e)=> setSchedule({...schedule,showDate: e.target.value})} />
+    
 
     <button onClick={()=>createSchedule()}>SAVE</button>
   

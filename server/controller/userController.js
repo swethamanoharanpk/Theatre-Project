@@ -122,35 +122,125 @@ const getScheduledMovies = async (req, res) => {
         const date = req.params.date;
         const movieId = req.params.id;
 
+
+
+
+
+        const inputDate = date
+
+// Parse the date string into a Date object
+const parsedDate = new Date(inputDate);
+
+// Convert to ISO format and set time to midnight (UTC)
+const formattedDate = new Date(
+  Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate())
+).toISOString();
+
+console.log(formattedDate); // Output: 2024-12-30T00:00:00.000Z
+
+
+
+
+
+
+
         console.log("Incoming params:", { date, movieId });
 
         // Find all schedules for the specified movieId
-        const screens = await Screen.find({ movieId });
+        const screens = await Screen.findOne({ movieId:movieId , showsDate:formattedDate });
 
         console.log("Fetched screens:", screens);
 
         const temp = [];
 
         // Iterate through each screen and its schedules
-        screens.forEach(screen => {
-            screen.movieSchedules.forEach(schedule => {
+        // screens.forEach(screen => {
+        //     screen.movieSchedules.forEach(schedule => {
+        //         const showDate = new Date(schedule.showDate);
+        //         const bodyDate = new Date(date);
+
+        //         if (
+        //             showDate.getDate() === bodyDate.getDate() &&
+        //             showDate.getMonth() === bodyDate.getMonth() &&
+        //             showDate.getFullYear() === bodyDate.getFullYear()
+        //         ) {
+        //             temp.push({
+        //                 screenId: screen._id,
+        //                 schedule, // Include the matching schedule
+        //             });
+        //         }
+        //     });
+        // });
+
+
+        if (screens.movieSchedules && Array.isArray(screens.movieSchedules)) {
+            screens.movieSchedules.forEach(schedule => {
                 const showDate = new Date(schedule.showDate);
                 const bodyDate = new Date(date);
-
+        
                 if (
                     showDate.getDate() === bodyDate.getDate() &&
                     showDate.getMonth() === bodyDate.getMonth() &&
                     showDate.getFullYear() === bodyDate.getFullYear()
                 ) {
                     temp.push({
-                        screenId: screen._id,
+                        screenId: screens._id,
                         schedule, // Include the matching schedule
                     });
                 }
             });
-        });
+        }
+        
 
         console.log("Filtered schedules:", temp);
+        
+            return res.status(200).json(screens);
+        
+
+        
+    } catch (err) {
+        console.error("Error in getScheduledMovies:", err);
+        return res.status(500).json({ error: err.message });
+    }
+};
+
+
+
+
+const getFilteredScheduledMovies = async (req, res) => {
+    try {
+        const date = req.params.date;
+        const movieId = req.params.id;
+
+        console.log("Incoming params:", { date, movieId });
+
+        // Find all schedules for the specified movieId
+        const screens = await Screen.findOne({ movieId });
+
+        console.log("Fetched :", screens);
+
+        const temp = [];
+
+        if (screens.movieSchedules && Array.isArray(screens.movieSchedules)) {
+            screens.movieSchedules.forEach(schedule => {
+                const showDate = new Date(schedule.showDate);
+                const bodyDate = new Date(date);
+        
+                if (
+                    showDate.getDate() === bodyDate.getDate() &&
+                    showDate.getMonth() === bodyDate.getMonth() &&
+                    showDate.getFullYear() === bodyDate.getFullYear()
+                ) {
+                    temp.push({
+                        screenId: screens._id,
+                        schedule, // Include the matching schedule
+                    });
+                }
+            });
+        }
+        
+
+        console.log("Filtered:", temp);
 
         return res.status(200).json(temp);
     } catch (err) {
@@ -160,4 +250,4 @@ const getScheduledMovies = async (req, res) => {
 };
 
 
-module.exports = {userRegister,userLogin,getsingleMovieData,getSingleUser,updateUser,getComingsoonMovies,getScheduledMovies}
+module.exports = {userRegister,userLogin,getsingleMovieData,getSingleUser,updateUser,getComingsoonMovies,getScheduledMovies,getFilteredScheduledMovies}

@@ -9,6 +9,9 @@ const movieScheduleSchema = new mongoose.Schema({
     seats:{
         type:Array
     },
+    showsDate:{
+        type:Date
+    },
     movieSchedules: [
         {
             movieId: {
@@ -17,7 +20,12 @@ const movieScheduleSchema = new mongoose.Schema({
             },
             showTime: String,
             showDate: Date,
-            notAvailableSeats: [String]
+            notAvailableSeats: [{
+                row : String,
+                col : Number,
+                seat_id : String,
+                price : Number
+            }]
 
         }
     ]

@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const {userRegister, userLogin,getsingleMovieData, getSingleUser, updateUser, getComingsoonMovies, getScheduledMovies} = require('../controller/userController')
+const {userRegister, userLogin,getsingleMovieData, getSingleUser, updateUser, getComingsoonMovies, getScheduledMovies,getFilteredScheduledMovies} = require('../controller/userController')
 
 router.post('/register',userRegister)
 router.post('/login',userLogin)
@@ -9,5 +9,6 @@ router.get('/getsingleuser/:id',getSingleUser)
 router.put('/update/:id',updateUser)
 router.get('/comingmovie',getComingsoonMovies)
 router.get('/schedule/:id/:date',getScheduledMovies)
+router.get('/filterschedule/:id/:date',getFilteredScheduledMovies)
 
 module.exports = router

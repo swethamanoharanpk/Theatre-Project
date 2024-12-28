@@ -156,11 +156,22 @@ export const getComingMovieDetails = async()=>{
 export const getSchedule = async(id,date)=>{
     try{
         console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",id,date)
-        const scheduledMovie = await axios.get(`http://localhost:4000/user/schedule/${id}/${date}`).then((res)=>{
-            console.log('axiossssss',res.data)
-        })
-        console.log("nnnnnnnnnnnnnnnnnnnnnnn",scheduledMovie.movieSchedulesForDate)
-        return scheduledMovie.movieSchedulesForDate.data
+        const scheduledMovie = await axios.get(`http://localhost:4000/user/schedule/${id}/${date}`)
+        console.log(" axiosssssssssssssss",scheduledMovie.data)
+        return scheduledMovie.data
+        
+
+    }catch(err){}
+}
+
+
+export const getFilteredSchedule = async(id,date)=>{
+    try{
+        console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",id,date)
+        const filteredScheduledMovie = await axios.get(`http://localhost:4000/user//filterschedule/${id}/${date}`)
+        console.log("second axiosssssssssssssss",filteredScheduledMovie.data)
+        return filteredScheduledMovie.data
+        
 
     }catch(err){}
 }
