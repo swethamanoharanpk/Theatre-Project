@@ -14,6 +14,8 @@ import Profile from './pages/userContents/Profile'
 import MovieDetails from './pages/userContents/MovieDetails'
 import ComingSoon from './pages/userContents/ComingSoon'
 import MovieSchedule from './pages/adminContents/MovieSchedule'
+import Success from './pages/userContents/Success'
+import Cancel from './pages/userContents/Cancel'
 
 function App() {
 
@@ -59,6 +61,12 @@ function App() {
     },
     {path:'/schedule',
       element:<MovieSchedule/>
+    },
+    {path:'/success',
+      element:<Success/>
+    },
+    {path:'/cancel',
+      element:<Cancel/>
     }
   ])
   return (

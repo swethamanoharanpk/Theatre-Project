@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { storeToken } from './src/Redux/UserSlice'
+
 
 export const addAdminLogin = async(adminInfo)=>{
     try{
@@ -193,6 +193,32 @@ export const addScreen = async(schedule)=>{
         console.log(err)
     }
 }
+export const bookingSeats = async(paymentDetails)=>{
+    console.log("payment..................",paymentDetails)
+    try{
+        const bookSeats = await axios.post('http://localhost:4000/user/booktickets',paymentDetails)
+        console.log("//////////////////",bookSeats.data)
+        return bookSeats.data
+
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+
+
+
+export const userBooking = async (userId) => {
+    console.log("User ID:", userId);
+    try {
+        const userBookingResponse = await axios.get(`http://localhost:4000/user/userbooking?userId=${userId}`);
+        return userBookingResponse.data;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 
 
 export const getMovies = ()=>{}

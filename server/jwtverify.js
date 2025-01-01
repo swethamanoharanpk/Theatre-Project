@@ -12,9 +12,10 @@ const generateToken = (id,role)=>{
 
 
 const verifyUserToken = (req,res,next)=>{
+    console.log(req.headers.token)
 
     try{
-        const userToken = req.headers.webToken
+        const userToken = req.headers.token
         if(userToken){
             webToken.verify(userToken,process.env.jwtSecretkey,(err,data)=>{
                 if(err){
@@ -26,6 +27,8 @@ const verifyUserToken = (req,res,next)=>{
                     return res.status(401).json('token not matched')
                 }
             })
+        }else{
+            return res.status(401).json("token not found")
         }
 
     }catch(err){

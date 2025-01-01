@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import UserProNavbar from '../../componenet/UserProNavbar'
 import Navbar from '../../componenet/Navbar'
 import { useSelector } from 'react-redux'
-import {getUserLogin, updateUserDetails} from '../../../api'
+import {getUserLogin, updateUserDetails, userBooking} from '../../../api'
 import {
   MDBBtn,
   MDBModal,
@@ -25,6 +25,7 @@ const Profile = ()=> {
   const [phone,setPhone] = useState()
 
   const [userData,setUserData] = useState([])
+  const [booking,setBooking] = useState([])
 
   const [basicModal, setBasicModal] = useState(false);
 
@@ -48,6 +49,7 @@ const Profile = ()=> {
   const updateSingleUser = ()=>{
     updateUserDetails({name,email,password,phone},id).then((result)=>{
       console.log("updateeeeeeeeeeeee",result)
+    
     })
     navigate('/login')
 
@@ -55,10 +57,19 @@ const Profile = ()=> {
 
   }
   
+
+  useEffect(()=>{
+    userBooking(id).then((result)=>{
+      console.log("hhhhheeeeeeeeeeeeeellllllllllllll0000000000",result)
+      setBooking(result)
+    })
+
+  },[])
+  
   return (
     <div style={{backgroundColor:'grey',width:'100%',height:'100vh'}}>
     <Navbar/>
-    <div style={{height:'400px',width:'70%',display:'flex', justifyContent:'space-around',backgroundColor:'black',color:'white',margin:'70px',marginLeft:'200px'}}>
+    <div style={{height:'480px',width:'70%',display:'flex', justifyContent:'space-around',backgroundColor:'black',color:'white',margin:'70px',marginLeft:'200px'}}>
     <div style={{paddingRight: '20px', borderRight: '1px solid yellow'}}>
     <h4 style={{textAlign:'center',padding:'20px',fontFamily:'"IM Fell English SC", serif',fontSize:'17px'}}>YOUR PROFILE DETAILS</h4>
     {userData.map((item,index)=>(
@@ -113,6 +124,22 @@ const Profile = ()=> {
     </div>
     <div>
     <UserProNavbar/>
+    <div>
+    {booking.map((list,index)=>(
+      <div key={index}>
+      <p>MovieName : {list.movieName}</p>
+      <p>showTime : {list.showTime}</p>
+      <p>showDate : {list.showDate}</p>
+      <p>TotalPrice : {list.totalPrice}</p>
+      {list.seats && list.seats.map((seat,seatIndex)=>(
+        <div>
+        <p>Seats : {seat.row } - {seat.seat_id }</p>
+        </div>
+      ))}
+      </div>
+    ))}
+    </div>
+    
     </div>
     </div>
     </div>

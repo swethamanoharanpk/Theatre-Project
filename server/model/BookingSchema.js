@@ -14,10 +14,9 @@ const bookingSchema = new mongoose.Schema({
         ref: 'Movie', // Reference to the Movie model
         required: true
     },
-    screenId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Screen', // Reference to the Screen model
-        required: true
+    movieName:{
+        type:String,
+        required:true
     },
     seats: [
         {
@@ -55,8 +54,7 @@ const bookingSchema = new mongoose.Schema({
         required: true
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
+        type: String,
         required: true
     }
 });

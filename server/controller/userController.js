@@ -1,9 +1,11 @@
 const user = require('../model/UserModel')
 const movie = require('../model/MovieModel')
-// const movieSchedules = require('../model/ScheduleModel')
 const Screen = require('../model/ScheduleModel')
 const argon = require('argon2')
 const {generateToken} = require('../jwtverify')
+const Stripe = require('stripe');
+const Booking = require('../model/BookingSchema')
+const mongoose = require('mongoose')
 
 
 const userRegister = async(req,res)=>{
@@ -250,4 +252,244 @@ const getFilteredScheduledMovies = async (req, res) => {
 };
 
 
-module.exports = {userRegister,userLogin,getsingleMovieData,getSingleUser,updateUser,getComingsoonMovies,getScheduledMovies,getFilteredScheduledMovies}
+// const bookTickets = async(req,res)=>{
+//     try{
+//         const {showTime,showDate,movieId,seats,totalPrice,paymentId,paymentType} = req.body
+//         console.log("ppppppppppppppp",req.body)
+//         const screen = await Screen.findById(movieId)
+//         const User = await user.findById(req.userId)
+
+//         if(!screen) {
+//             return res.status(404).json({
+//                 message:"theatre not found"
+//             })
+//         }
+
+
+//         const stripe = new Stripe(process.env.STRIPESCRTKEY)
+
+//         const session = await stripe.checkout.sessions.create({
+//             payment_method_types:['card'],
+//             mode: 'payment',
+//             success_url: `${process.env.CLIENTURL}/checkout-success`,
+//             cancel_url: `${req.protocol}://${req.get('host')}/seat/${movieId}`,
+//             customer_email: User.email,
+//             line_items:[{
+//                 price_data:{
+//                     currency:'USD',
+//                     unit_amount: totalPrice * 100,
+//                     product_data:{
+//                         name : screen.movieName,
+
+//                 }
+//                 },
+//                 quantity:1
+//             }]
+//         })
+
+        
+//         const movieSchedule = screen.movieSchedules.find(schedule=>{
+//             console.log(schedule)
+//             let showDate1 = new Date(schedule.showDate)
+//             let showDate2 = new Date(showDate)
+//             if(showDate1.getDay() == showDate2.getDay() &&
+//             showDate1.getMonth() == showDate2.getMonth() &&
+//             showDate1.getFullYear() == showDate2.getFullYear() &&
+//             schedule.showTime === showTime &&
+//             schedule.movieId === movieId){
+//                 return true;
+//             }
+//             return false;
+//         })
+
+
+//         if(!movieSchedule){
+//             return res.status(404).json({message:"movie schedule not found"})
+//         }
+
+        
+//         if(!User){
+//             return res.status(404).json({message:"User not found"})
+//         }
+
+//         const newBooking = new Booking({userId:req.userId, showTime, showDate, movieId, screenId,seats,totalPrice, paymentId, paymentType})
+//         await newBooking.save();
+//         console.log('new booking done')
+
+//         movieSchedule.notAvailableSeats.push(...seats);
+//         await screen.save();
+//         User.bookings.push(newBooking._id)
+//         await user.save();
+
+//         return res.status(200).json({message:"Booking successfull"})
+
+
+
+//     }catch(err){
+//         return res.status(500).json(err.message)
+//     }
+// }
+
+
+
+const bookTickets = async (req, res) => {
+    try {
+        const { showTime, showDate, movieId, seats, totalPrice, paymentId, paymentType ,movieName,userId} = req.body;
+        console.log("Request Body:", req.body);
+
+        const screen = await Screen.findOne({movieId});
+        console.log("screennnnnnnnnnnnnn",screen)
+        
+        if (!screen) {
+            return res.status(404).json({ message: "Theatre not found" });
+           
+        }
+
+        const User = await user.findById(req.body.userId);
+        console.log("screen and userrrrrrrrrrrrrrr",User)
+        if (!User) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        
+        const stripe = new Stripe(process.env.STRIPESCRTKEY);
+
+        let session;
+        try {
+            session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                mode: 'payment',
+                line_items: [{
+                    price_data: {
+                        currency: 'usd',
+                        unit_amount: totalPrice * 100, // Ensure correct unit conversion
+                        product_data: {
+                            name: screen.movieName,
+                        },
+                    },
+                    quantity: 1,
+                }],
+                success_url: `${process.env.CLIENTURL}/success`,
+                cancel_url: `${process.env.CLIENTURL}/cancel`,
+                customer_email: User.email,
+
+                
+                
+            });
+
+
+            const newBooking = new Booking({
+                userId: req.body.userId,
+                showTime,
+                showDate,
+                movieId,
+                movieName, 
+                seats,
+                totalPrice,
+                paymentId,
+                paymentType,
+            });
+    
+            await newBooking.save();
+            console.log("New booking done");
+
+        
+        } catch (stripeError) {
+            console.error("Stripe error:", stripeError.message);
+            return res.status(500).json({ message: "Stripe session creation failed", error: stripeError.message });
+        }
+
+
+
+        return res.status(200).json({ message: "Booking successful", session});
+    } catch (err) {
+        console.error("Error:", err.message);
+        return res.status(500).json({ message: err.message });
+    }
+};
+
+// const bookingConfirm = async(req,res)=>{
+//     try{
+
+
+//         const movieSchedule = screen.movieSchedules?.find(schedule => {
+//             console.log(schedule);
+//             const scheduleDate = new Date(schedule.showDate);
+//             const inputDate = new Date(showDate);
+//             return (
+//                 scheduleDate.toDateString() === inputDate.toDateString() &&
+//                 schedule.showTime === showTime &&
+//                 schedule.movieId === movieId
+//             );
+//         });
+
+//         // console.log("sesssionnnnnnnnnnn",session)
+        
+//         // if (!movieSchedule) {
+//         //     return res.status(404).json({ message: "Movie schedule not found" });
+//         // }
+
+
+//         User.bookings.push(newBooking._id);
+//         await User.save();
+
+
+//         const movieSchedule = screen.movieSchedules?.find(schedule => {
+//             console.log(schedule);
+//             const scheduleDate = new Date(schedule.showDate);
+//             const inputDate = new Date(showDate);
+//             return (
+//                 scheduleDate.toDateString() === inputDate.toDateString() &&
+//                 schedule.showTime === showTime &&
+//                 schedule.movieId === movieId
+//             );
+//         });
+
+//         movieSchedule.notAvailableSeats.push(...seats);
+//         await screen.save();
+
+//         console.log("haiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+
+       
+       
+        
+//     }catch(err){
+//         return res.status(500).json({message:err.message})
+//     }
+// }
+
+
+
+// const userBooking = async(req,res)=>{
+//     try{
+        
+//         const getUserBooking = await Booking.find({userId:req.body.userId})
+//         console.log("userBokkinggggggggggggg",getUserBooking)
+//         return res.status(200).json(getUserBooking)
+
+//     }catch(err){
+//         return res.status(500).json({message:err.message})
+//     }
+// }
+
+
+
+const userBooking = async (req, res) => {
+    try {
+        const userId = req.query.userId; // Access query parameter
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+
+        const getUserBooking = await Booking.find({ userId });
+        res.status(200).json(getUserBooking);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
+
+
+
+module.exports = {userRegister,userLogin,getsingleMovieData,getSingleUser,updateUser,getComingsoonMovies,getScheduledMovies,getFilteredScheduledMovies,bookTickets,userBooking}
